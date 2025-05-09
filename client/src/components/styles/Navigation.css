@@ -1,0 +1,113 @@
+.nav-container {
+    width: 20%;
+    height: 100vh;
+    background: linear-gradient(182deg, rgba(255, 255, 255, 1) 28%, rgba(88, 0, 189, 1) 89%);
+    display: flex;
+    flex-direction: column;
+    
+    padding: 2rem 1rem;
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    top: 0;
+  }
+  
+  .logo {
+    margin-top: 3rem;
+    font-size: 3rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    color: black;
+    align-self: flex-start;
+    margin-left: 1.5rem;
+  }
+  
+  .nav-data {
+    list-style: none;
+    padding: 0;
+    margin-top: 2rem;
+    width: 100%;
+    text-align: left;
+    margin-left: 5rem;
+    padding-left: 1.5rem;
+  }
+  
+  .nav-data li {
+    margin: 3rem 0;
+    font-size: 1.2rem;
+    color: black;
+    cursor: pointer;
+  }
+  .nav-data li {
+    margin: 3rem 0;
+    font-size: 1.2rem;
+    color: black;
+    cursor: pointer;
+  }
+  
+  .nav-data li a {
+    text-decoration: none;
+    color: black; /* Ensure links look like text */
+  }
+  
+  .nav-data li a:hover {
+    color: #5c6bc0; /* Optional: Add a hover color */
+  }
+  
+  
+  .logout {
+    margin-top: 30dvh;
+    cursor: pointer;
+    color: black;
+    
+    align-self: flex-start;
+    margin-left: 7rem;
+  }
+  .menu-icon {
+    display: none;
+    position: fixed;
+    top: 1rem;
+    left: 1rem;
+    z-index: 1001;
+    cursor: pointer;
+    color: black;
+  }
+  
+  @media screen and (max-width: 768px) {
+    .menu-icon {
+      display: block;
+    }
+  
+    .nav-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 70%; /* Adjust width for mobile */
+      height: 100vh;
+      transform: translateX(-100%);
+      transition: transform 0.3s ease-in-out;
+      z-index: 1000;
+      background: linear-gradient(182deg, rgba(255, 255, 255, 1) 28%, rgba(88, 0, 189, 1) 89%);
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+    }
+  
+    .nav-container.open {
+      transform: translateX(0);
+    }
+  
+    .nav-data,
+    .logo,
+    .logout {
+      display: none;
+    }
+  
+    .nav-container.open .nav-data,
+    .nav-container.open .logo,
+    .nav-container.open .logout {
+      display: block;
+    }
+  }
+  
+  
+
+  
