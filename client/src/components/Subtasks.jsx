@@ -1,26 +1,10 @@
 import { useEffect, useState } from 'react';
 import axios from '../api/axios';
 
-const Subtasks = ({ projectId }) => {
-  const [taskList, setTaskList] = useState([]);
+const Subtasks = ({ taskList, fetchTasks,projectId }) => {
   const [showSubtaskDialog, setshowSubtaskDialog] = useState(false);
   const [newSubtaskTitle, setnewSubtaskTitle] = useState('');
   
-  const fetchTasks = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.get(`/projects/${projectId}/task`, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      setTaskList(res.data.taskList);
-    } catch (err) {
-      console.error('Error fetching tasks:', err);
-    }
-  };
-
-  useEffect(() => {
-    if (projectId) fetchTasks();
-  }, [projectId]);
 
   const toggleTask = async (index) => {
     try {

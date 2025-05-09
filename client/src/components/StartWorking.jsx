@@ -10,7 +10,18 @@ export default function StartWorking() {
     const { projectId } = useParams();  // Get projectId from URL
 
     //console.log(projectId);  // You now have the projectId from the URL
-
+    const [taskList, setTaskList] = useState([]);
+    const fetchTasks = async () => {
+      try {
+        const token = localStorage.getItem('token');
+        const res = await axios.get(`/projects/${projectId}/task`, {
+          headers: { Authorization: `Bearer ${token}` }
+        });
+        setTaskList(res.data.taskList);
+      } catch (err) {
+        console.error('Error fetching tasks:', err);
+      }
+    };
   
   const [seconds, setSeconds] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
@@ -27,6 +38,13 @@ export default function StartWorking() {
 
     return () => clearInterval(intervalRef.current);
   }, [isRunning]);
+
+  useEffect(() => {
+    if (projectId) {
+      fetchTasks()
+    }
+  }, [projectId]);
+  
 
   const formatTime = (secs) => {
     const h = String(Math.floor(secs / 3600)).padStart(2, '0');
@@ -81,11 +99,11 @@ export default function StartWorking() {
       <div className="details">
         {/* Project details, tasklist etc. */}
         <div className="progress">
-        <Progress projectId={projectId} />
+        <Progress taskList={taskList} />
 
         </div>
         <div className="subtasks">
-        <Subtasks projectId={projectId} />
+        <Subtasks taskList={taskList} fetchTasks={fetchTasks} projectId={projectId} />
 
         </div>
       </div>

@@ -1,24 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from '../api/axios';
 
-const Progress = ({ projectId }) => {
-  const [taskList, setTaskList] = useState([]);
-
-  const fetchTasks = async () => {
-    try {
-      const token = localStorage.getItem('token');
-      const res = await axios.get(`/projects/${projectId}/task`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setTaskList(res.data.taskList);
-    } catch (err) {
-      console.error('Error fetching tasks:', err);
-    }
-  };
-
-  useEffect(() => {
-    if (projectId) fetchTasks();
-  }, [projectId]);
+const Progress = ({ taskList }) => {
 
   const completed = taskList.filter(task => task.done).length;
   const total = taskList.length;
