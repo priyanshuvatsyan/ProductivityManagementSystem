@@ -1,0 +1,91 @@
+/*subtask.css*/
+.subtask-container-subtasks {
+    overflow-y: auto;
+    max-height: 500px;
+  }
+  .subtask-container-subtasks::-webkit-scrollbar {
+    display: none; /* Chrome, Safari */
+  }
+
+/*progress.css*/
+.time-worked{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+.progress-container{
+
+}
+.view-btn-container{
+    margin-top: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+
+/* main css*/
+.clock-details-container{
+    margin-left: 20rem;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.clock{
+    margin-left: 12rem;
+    border-radius: 20px;
+    background: #7b39e623;
+    padding: 10rem 12rem;
+    margin-top: 0rem;
+    
+}
+.clock h1 {
+    font-size: 5rem;
+    color: rgb(78, 19, 133);
+    width: 10ch; /* or adjust based on max timer digits like 00:00:00 */
+    font-family: monospace;
+    text-align: center;
+  }
+  
+.buttons-container{
+    display: flex;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+    margin-top: 2rem;
+}
+.clock button{
+    font-size: 1.2rem;
+    outline: none;
+    border: none;
+    border-radius: 20px;
+    padding: 3% 10%;
+}
+.buttons-container > :first-child {
+    background: #8426ff;
+    color: #fff;
+
+  }
+  .buttons-container > :second-child {
+    display: none;
+  }
+  .buttons-container > :nth-child(2) {
+    border: 2px solid rgba(92, 92, 92, 0.425);
+  }
+  .buttons-container > :nth-child(3) {
+    background: #3b3b3b;
+    color: #fff;
+  }
+  
+  .details{
+margin-top: 15rem;
+margin-left: 15rem;
+  }
+  
+  
+  

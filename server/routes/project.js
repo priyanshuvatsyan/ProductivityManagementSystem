@@ -37,6 +37,26 @@ router.get('/', auth, async (req, res) => {
   }
 });
 
+// @route GET /api/projects/:id
+// @desc Get a specific project by ID
+// @access Private
+router.get('/:id',auth,async (req,res) => {
+  try {
+    const project = await Project.findById(req.params.id);
+    if (!project) return res.status(404).json({ msg: 'Project not found' });
+
+    if (project.userId.toString() !== req.user.id) {
+      return res.status(401).json({ msg: 'Not authorized' });
+    }
+
+    res.json(project);
+
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
+  }
+})
+
 // @route GET /api/projects/:id/task
 // @desc Get subtasks for a specific project
 // @access Private

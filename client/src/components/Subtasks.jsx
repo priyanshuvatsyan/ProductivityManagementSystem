@@ -48,37 +48,43 @@ const Subtasks = ({ taskList, fetchTasks,projectId }) => {
   }
 
   return (
-    <div>
+    <div className="subtask-container subtask-container-subtasks" >
       <h2>Subtasks</h2>
       <ul>
         {taskList.map((task, index) => (
-          <li key={index}>
+          <li key={index}  className="subtask-item subtask-item-subtasks" >
             <input
               type="checkbox"
               checked={task.done}
               onChange={() => toggleTask(index)}
             />
-            {task.title}
+             <span style={{ textDecoration: task.done ? 'line-through' : 'none' }}>
+                          {task.title}
+                        </span>
             <button onClick={() => handleDeleteSubtask(index)}>🗑️</button>
           </li>
         ))}
       </ul>
       <div style={{ marginTop: '1rem' }}>
-        <button onClick={() => setshowSubtaskDialog(true)}>+ Add Subtask</button>
+        <button  className="add-subtask add-subtask-subtasks"  onClick={() => setshowSubtaskDialog(true)}> Add Subtask</button>
       </div>
 
 
       {
         showSubtaskDialog && (
-            <div className="">
+            <div  className="dialog-backdrop">
+              <div className="dialog">
                 <input type="text"
                 value={newSubtaskTitle}
                 placeholder='Enter subtask'
                 onChange={(e)=> setnewSubtaskTitle(e.target.value)}
                 />
+                <div className="dialog-buttons">
                  <button onClick={handleAddSubtask}>Add</button>
                  <button onClick={() => setshowSubtaskDialog(false)}>Cancel</button>
-            </div>
+              </div>
+            </div> 
+          </div>
         )
       }
     </div>
