@@ -19,7 +19,7 @@ export default function AllTasks() {
   const fetchProjects = async () => {
     const token = localStorage.getItem('token');
     if (!token) return;
-
+   /*    console.log(token); */
     try {
       const res = await axios.get('/projects', {
         headers: { Authorization: `Bearer ${token}` }
@@ -118,6 +118,7 @@ export default function AllTasks() {
 
   useEffect(() => {
     fetchProjects();
+    
   }, []);
 
   return (
@@ -144,7 +145,10 @@ export default function AllTasks() {
                   {formatTime(project.totalTimeWorkedSeconds)}
                 </span>
                 <div className="task-actions">
-                  <button className="view-btn" onClick={() => navigate(`/project/${project._id}`)}>View</button>
+                  
+                <button className="view-btn"onClick={() => navigate(`/project/${project._id}`)}
+                >View</button>
+
                   <button className="delete-btn" onClick={() => handleDelete(project._id)}>Delete</button>
                   <button className="dropdown-btn" onClick={() => handleToggleExpand(project._id)}>▼</button>
                 </div>

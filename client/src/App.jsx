@@ -24,6 +24,7 @@ function App() {
         <Route path='/dashboard' element={< Dashboard/>} />
         <Route path="/start/:projectId" element={<StartWorking />} />
         <Route path="/project/:projectId" element={<TaskDetails />} />
+
       </Routes>}
     </>
   )

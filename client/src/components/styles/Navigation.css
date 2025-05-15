@@ -108,6 +108,15 @@
     }
   }
   
+  @media screen and (min-width:769px) and (max-width: 1110px){
+      .nav-data{
+     
+        margin-left: 1rem
+     }
+       .logout {
+        margin-left: .7rem;
+       }
+}
   
 
   

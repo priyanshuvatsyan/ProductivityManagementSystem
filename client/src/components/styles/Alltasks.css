@@ -82,16 +82,20 @@ margin-top: 9rem;
     margin-right: 10px;
   }
   
-  .add-task{
-    cursor: pointer;
-   color: #5f5f5f;
-    border-radius: 50px;
-    border: none;
-    background: linear-gradient(182deg, rgba(255, 255, 255, 1) 28%, rgba(132, 43, 233, 0.877) 89%);
-    position: absolute;
-    left: 105rem;
-    top: 50rem;
-  }
+.add-task {
+  position: fixed;
+  bottom: 5rem;
+  right: 2rem;
+  padding: 8px 7px;
+  font-weight: bold;
+  border-radius: 50px;
+  border: none;
+  background: linear-gradient(182deg, rgba(255, 255, 255, 1) 28%, rgba(132, 43, 233, 0.877) 89%);
+  color: #5f5f5f;
+  cursor: pointer;
+  z-index: 1000;
+}
+
   .subtask-container {
     margin-left: 40px;
     margin-top: 10px;
@@ -243,3 +247,24 @@ background: linear-gradient(240deg, rgba(255, 255, 255, 1) 31%, rgba(88, 0, 189,
     }
   }
   
+
+ /*  
+@media screen and (min-width:1585px) and (max-width: 1800px){
+      .add-task{
+        left: 0;
+        margin-left: 95rem
+     }
+}
+  
+@media screen and (min-width:1420px) and (max-width: 1585px){
+      .add-task{
+        left: 0;
+        margin-left: 85rem
+     }
+} 
+@media screen and (min-width:1120px) and (max-width: 1420px){
+      .add-task{
+        left: 0;
+        margin-left: 75rem
+     }
+} */

@@ -1,0 +1,141 @@
+.chart-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 4px;
+    color: #333;
+}
+
+.chart-subtitle {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+.summary-info {
+    margin: 0px;
+    font-size: 16px;
+    color: #444;
+}
+
+.summary-info p {
+    margin: 4px 0;
+}
+
+.chart-section {
+    width: 50dvw;
+
+}
+
+.chart {
+    margin-top: 2rem;
+    margin-left: 30rem;
+}
+
+.chart-section {
+    width: 50dvw;
+    padding: 1rem;
+}
+
+.chart-title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    margin-left: 8px;
+    color: #333;
+}
+
+.chart-subtitle {
+    font-size: 14px;
+    color: #777;
+    margin-bottom: 24px;
+    margin-left: 8px;
+}
+
+.task-details-container {
+    padding: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.task-details-container h2 {
+    font-size: 28px;
+    margin-bottom: 10px;
+    color: #222;
+}
+
+.task-details-container p {
+    font-size: 16px;
+    margin: 6px 0;
+    color: #444;
+}
+
+.other-details {
+    width: 40rem;
+    margin-left: 40dvw;
+
+}
+
+.subtasks {}
+
+@media screen and (max-width: 768px) {
+    .main-container{
+      
+        width: 70dvw !important;
+    }
+    .taskDetails{
+       
+        width: 70dvw !important;
+    }
+    .chart {
+       
+      
+        margin-left: 0rem;
+    }
+
+    .other-details {
+       align-items: center;
+       justify-content: center;
+       text-align: center;
+        width: 18rem;
+        margin-left: 2.7rem;
+    }
+
+    .chart-subtitle {
+        font-size: 12px !important;
+        
+    }
+
+    .summary-info {
+        font-size: 10px !important;
+        
+    }
+
+    .ResponsiveContainer {
+       /*  border: 1px solid red; */
+        margin-left: -7rem !important;
+        height: 40dvh !important;
+        width: 115dvw !important;
+    }
+    .line-chart{
+     
+    }
+
+    .task-details-container h2 {
+        font-size: 1.2rem;
+    }
+
+    .chart-title {
+        font-size: 1rem;
+    }
+
+    /*
+    left here:
+        was trying to make display responsive but there is some extra width whose cause is unknown .....
+    */
+}
+
+@media screen and (min-width:780px) and (max-width: 1345px){
+   .chart{
+     
+        margin-left: 15rem
+     }
+}
