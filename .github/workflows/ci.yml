@@ -40,18 +40,22 @@ jobs:
           npm test || echo "No tests found"
 
       - name: Send email on success
-        if: success()
+        if: success() && env.EMAIL_USERNAME != '' && env.EMAIL_PASSWORD != ''
         uses: dawidd6/action-send-mail@v3
+        env:
+          EMAIL_USERNAME: ${{ secrets.EMAIL_USERNAME }}
+          EMAIL_PASSWORD: ${{ secrets.EMAIL_PASSWORD }}
         with:
           server_address: smtp.gmail.com
           server_port: 465
-          username: ${{ secrets.EMAIL_USERNAME }}
-          password: ${{ secrets.EMAIL_PASSWORD }}
+          username: ${{ env.EMAIL_USERNAME }}
+          password: ${{ env.EMAIL_PASSWORD }}
           subject: "✅ CI Pipeline Passed"
-          to: priyanshuvatsyan@gmail.com
-          from: "DevOps Bot <priyanshuvatsyan@gmail.com>"
+          to: priyanshuvatsyan087@gmail.com
+          from: "DevOps Bot <priyanshuvatsyan087@gmail.com>"
           body: |
             🎉 The latest commit passed all checks!
             ✅ Dependencies installed
             ✅ Frontend linted and built
             ✅ Backend tests passed
+
