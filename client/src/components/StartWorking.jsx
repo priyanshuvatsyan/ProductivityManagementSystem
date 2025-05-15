@@ -3,14 +3,12 @@ import Navigation from './Nagivation';
 import axios from '../api/axios';
 import { useParams } from 'react-router-dom';
 import Progress from './Progress';
-import Subtasks from './subtasks';
-import './styles/StartWorking.css'
-
+import Subtasks from './Subtasks';
+import './styles/StartWorking.css';
 
 export default function StartWorking() {
-  const { projectId } = useParams();  // Get projectId from URL
+  const { projectId } = useParams();
 
-  //console.log(projectId);  // You now have the projectId from the URL
   const [taskList, setTaskList] = useState([]);
   const fetchTasks = async () => {
     try {
@@ -24,23 +22,28 @@ export default function StartWorking() {
     }
   };
 
-  const [seconds, setSeconds] = useState(0);
+  const [elapsed, setElapsed] = useState(0);
   const [isRunning, setIsRunning] = useState(false);
+  const [startTime, setStartTime] = useState(null);
   const intervalRef = useRef(null);
 
   useEffect(() => {
     if (isRunning) {
+      // Only set new startTime if it's the first time starting
+      if (!startTime) {
+        setStartTime(new Date());
+      }
       intervalRef.current = setInterval(() => {
-        setSeconds(prev => prev + 1);
+        const now = new Date();
+        const newElapsed = Math.floor((now - new Date(startTime)) / 1000);
+        setElapsed(newElapsed);
       }, 1000);
     } else {
       clearInterval(intervalRef.current);
     }
 
     return () => clearInterval(intervalRef.current);
-  }, [isRunning]);
-
-
+  }, [isRunning, startTime]);
 
   const [projectDetails, setProjectDetails] = useState(null);
   const fetchProjectDetails = async () => {
@@ -62,7 +65,6 @@ export default function StartWorking() {
     }
   }, [projectId]);
 
-
   const formatTime = (secs) => {
     const h = String(Math.floor(secs / 3600)).padStart(2, '0');
     const m = String(Math.floor((secs % 3600) / 60)).padStart(2, '0');
@@ -73,13 +75,12 @@ export default function StartWorking() {
   const handleDone = async () => {
     clearInterval(intervalRef.current);
     setIsRunning(false);
+    setStartTime(null);
 
     const today = new Date();
-    const dateString = today.toISOString().split('T')[0]; // Format: "YYYY-MM-DD"
+    const dateString = today.toISOString().split('T')[0];
+    const timeWorkedInMinutes = elapsed / 60;
 
-    const timeWorkedInMinutes = seconds / 60; // Convert seconds to minutes
-
-    // Make API call to update the time for this project
     try {
       const token = localStorage.getItem('token');
       await axios.put(
@@ -89,15 +90,14 @@ export default function StartWorking() {
           timeWorked: timeWorkedInMinutes,
         },
         {
-          headers: { Authorization: `Bearer ${token}` }, // Ensure authorization
+          headers: { Authorization: `Bearer ${token}` },
         }
-      )
+      );
     } catch (err) {
       console.error(err);
     }
 
-
-    setSeconds(0);
+    setElapsed(0);
   };
 
   return (
@@ -107,16 +107,21 @@ export default function StartWorking() {
       </div>
 
       <div className="clock-details-container">
-        <div className="clock" >
-          <h1>{formatTime(seconds)}</h1>
+        <div className="clock">
+          <h1>{formatTime(elapsed)}</h1>
           <div className="buttons-container">
-            <button onClick={() => setIsRunning(true)}>Start</button>
-            <button onClick={() => setIsRunning(false)}>Pause</button>
+            <button onClick={() => {
+              setIsRunning(true);
+              if (!startTime) setStartTime(new Date());
+            }}>Start</button>
+            <button onClick={() => {
+              setIsRunning(false);
+              setStartTime(null);
+            }}>Pause</button>
             <button onClick={handleDone}>Done</button>
           </div>
         </div>
         <div className="details">
-          {/* Project details, tasklist etc. */}
           <div className="progress">
             <Progress taskList={taskList} projectDetails={projectDetails} />
           </div>
