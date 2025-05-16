@@ -16,10 +16,12 @@ import Navigation from '../components/Nagivation';
 export default function Dashboard() {
 
   const [projects, setprojects] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const fetchProjects = async () => {
     try {
       const token = localStorage.getItem('token')
+      setLoading(true);
       const res = await axios.get(`/projects`, {
         headers: { Authorization: `Bearer ${token}` }
       });
@@ -27,6 +29,8 @@ export default function Dashboard() {
     } catch (error) {
       console.log("error fetching projects", error);
 
+    }finally{
+      setLoading(false);
     }
   }
   useEffect(() => {
@@ -103,6 +107,13 @@ export default function Dashboard() {
 
       </div>
 
+  {loading && (
+  <div className="dialog-backdrop">
+    <div className="dialog authdialog">
+      <p>⏳ Please wait, Loading your Dashboard...</p>
+    </div>
+  </div>
+)}
     </div>
   );
 }

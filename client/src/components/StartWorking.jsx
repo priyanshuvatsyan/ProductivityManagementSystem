@@ -9,7 +9,58 @@ import './styles/StartWorking.css';
 export default function StartWorking() {
   const { projectId } = useParams();
 
+  const [elapsed, setElapsed] = useState(0);
+  const [isRunning, setIsRunning] = useState(false);
+  const intervalRef = useRef(null);
+
   const [taskList, setTaskList] = useState([]);
+  const [projectDetails, setProjectDetails] = useState(null);
+
+  // Timer logic
+  useEffect(() => {
+    if (isRunning) {
+      intervalRef.current = setInterval(() => {
+        setElapsed(prev => prev + 1);
+      }, 1000);
+    } else {
+      clearInterval(intervalRef.current);
+    }
+
+    return () => clearInterval(intervalRef.current);
+  }, [isRunning]);
+
+  const handlePauseResume = () => {
+    setIsRunning(prev => !prev);
+  };
+
+  const handleDone = async () => {
+    clearInterval(intervalRef.current);
+    setIsRunning(false);
+
+    const today = new Date();
+    const dateString = today.toISOString().split('T')[0];
+    const timeWorkedInMinutes = elapsed / 60;
+
+    try {
+      const token = localStorage.getItem('token');
+      await axios.put(
+        `/projects/${projectId}/update-time`,
+        {
+          date: dateString,
+          timeWorked: timeWorkedInMinutes,
+        },
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+    } catch (err) {
+      console.error(err);
+    }
+
+    setElapsed(0);
+  };
+
+  // Fetch project and task data
   const fetchTasks = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -22,30 +73,6 @@ export default function StartWorking() {
     }
   };
 
-  const [elapsed, setElapsed] = useState(0);
-  const [isRunning, setIsRunning] = useState(false);
-  const [startTime, setStartTime] = useState(null);
-  const intervalRef = useRef(null);
-
-  useEffect(() => {
-    if (isRunning) {
-      // Only set new startTime if it's the first time starting
-      if (!startTime) {
-        setStartTime(new Date());
-      }
-      intervalRef.current = setInterval(() => {
-        const now = new Date();
-        const newElapsed = Math.floor((now - new Date(startTime)) / 1000);
-        setElapsed(newElapsed);
-      }, 1000);
-    } else {
-      clearInterval(intervalRef.current);
-    }
-
-    return () => clearInterval(intervalRef.current);
-  }, [isRunning, startTime]);
-
-  const [projectDetails, setProjectDetails] = useState(null);
   const fetchProjectDetails = async () => {
     try {
       const token = localStorage.getItem('token');
@@ -72,34 +99,6 @@ export default function StartWorking() {
     return `${h}:${m}:${s}`;
   };
 
-  const handleDone = async () => {
-    clearInterval(intervalRef.current);
-    setIsRunning(false);
-    setStartTime(null);
-
-    const today = new Date();
-    const dateString = today.toISOString().split('T')[0];
-    const timeWorkedInMinutes = elapsed / 60;
-
-    try {
-      const token = localStorage.getItem('token');
-      await axios.put(
-        `/projects/${projectId}/update-time`,
-        {
-          date: dateString,
-          timeWorked: timeWorkedInMinutes,
-        },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-    } catch (err) {
-      console.error(err);
-    }
-
-    setElapsed(0);
-  };
-
   return (
     <div>
       <div className="navigation">
@@ -110,14 +109,10 @@ export default function StartWorking() {
         <div className="clock">
           <h1>{formatTime(elapsed)}</h1>
           <div className="buttons-container">
-            <button onClick={() => {
-              setIsRunning(true);
-              if (!startTime) setStartTime(new Date());
-            }}>Start</button>
-            <button onClick={() => {
-              setIsRunning(false);
-              setStartTime(null);
-            }}>Pause</button>
+            <button onClick={() => setIsRunning(true)}>Start</button>
+            <button onClick={handlePauseResume}>
+              {isRunning ? 'Pause' : 'Resume'}
+            </button>
             <button onClick={handleDone}>Done</button>
           </div>
         </div>

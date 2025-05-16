@@ -13,12 +13,17 @@ export default function AllTasks() {
   const [showSubtaskDialog, setShowSubtaskDialog] = useState(false);
   const [newSubtaskTitle, setNewSubtaskTitle] = useState('');
   const [activeSubtaskProjectId, setActiveSubtaskProjectId] = useState(null);
+  const [authPopUp, setauthPopUp] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [allTaskloading, setallTaskloading] = useState(false);
+
 
   const navigate = useNavigate();
 
   const fetchProjects = async () => {
     const token = localStorage.getItem('token');
     if (!token) return;
+    setallTaskloading(true);
    /*    console.log(token); */
     try {
       const res = await axios.get('/projects', {
@@ -27,12 +32,15 @@ export default function AllTasks() {
       setProjects(res.data);
     } catch (err) {
       console.error('Error fetching projects:', err);
+    }finally{
+      setallTaskloading(false);
     }
   };
 
   const handleAddProject = async () => {
     const token = localStorage.getItem('token');
     if (!token) return alert("Login first");
+     setLoading(true);
     try {
       const res = await axios.post('/projects', { projectName: newProjectName }, {
         headers: { Authorization: `Bearer ${token}` }
@@ -42,13 +50,15 @@ export default function AllTasks() {
       setNewProjectName('');
     } catch (err) {
       console.error('Failed to add project:', err);
-    }
+    }finally {
+    setLoading(false);
+  }
   };
 
   const handleDelete = async (id) => {
     const token = localStorage.getItem('token');
     if (!token) return alert('Login first');
-
+     setLoading(true);
     try {
       await axios.delete(`/projects/${id}`, {
         headers: { Authorization: `Bearer ${token}` }
@@ -56,7 +66,9 @@ export default function AllTasks() {
       setProjects(prev => prev.filter(p => p._id !== id));
     } catch (err) {
       console.error('Failed to delete project:', err);
-    }
+    }finally {
+    setLoading(false);
+  }
   };
 
   const handleToggleExpand = (projectId) => {
@@ -65,6 +77,7 @@ export default function AllTasks() {
 
   const handleAddSubtask = async () => {
     if (!newSubtaskTitle || !activeSubtaskProjectId) return;
+     setLoading(true);
     try {
       const res = await axios.post(`/projects/${activeSubtaskProjectId}/task`, {
         taskName: newSubtaskTitle
@@ -79,7 +92,10 @@ export default function AllTasks() {
       setActiveSubtaskProjectId(null);
     } catch (err) {
       console.error('Failed to add subtask:', err);
-    }
+    }finally {
+    setLoading(false);
+  }
+
   };
 
   const handleToggleDone = async (projectId, index) => {
@@ -97,6 +113,7 @@ export default function AllTasks() {
 
   const handleDeleteSubtask = async (projectId, index) => {
     try {
+      setLoading(true);
       const res = await axios.delete(`/projects/${projectId}/task/${index}`);
       setProjects(prev =>
         prev.map(p =>
@@ -105,7 +122,9 @@ export default function AllTasks() {
       );
     } catch (err) {
       console.error('Failed to delete subtask:', err);
-    }
+    }finally {
+    setLoading(false);
+  }
   };
 
   const formatTime = (seconds) => {
@@ -117,7 +136,15 @@ export default function AllTasks() {
   };
 
   useEffect(() => {
-    fetchProjects();
+    
+
+     const token = localStorage.getItem('token');
+    if (!token){
+      setauthPopUp(true);
+    }
+    else{
+fetchProjects();
+    }
     
   }, []);
 
@@ -223,6 +250,38 @@ export default function AllTasks() {
           </div>
         )}
       </div>
+      {authPopUp && (
+  <div className="dialog-backdrop">
+    <div className="dialog authdialog ">
+      <h3>You are not logged in</h3>
+      <p>Please login to continue</p>
+      <div className="dialog-buttons">
+        <button onClick={() => navigate('/authentication')}>Login</button>
+        <button onClick={() => setauthPopUp(false)}>Cancel</button>
+      </div>
+    </div>
+  </div>
+)}
+
+{loading && (
+  <div className="dialog-backdrop">
+    <div className="dialog authdialog">
+      <p>⏳ Please wait, saving to backend...</p>
+    </div>
+  </div>
+)}
+
+
+{allTaskloading && (
+  <div className="dialog-backdrop">
+    <div className="dialog authdialog">
+      <p>⏳ Please wait, Your tasks are getting fetched...</p>
+    </div>
+  </div>
+)}
+
+
+
     </div>
   );
 }
