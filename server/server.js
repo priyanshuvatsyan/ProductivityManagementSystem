@@ -18,8 +18,7 @@ connectDB();
 // Use routes
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/projects', require('./routes/project')); 
-app.use('/api/time', require('./routes/time'));
-
+app.use('/api/time', require('./routes/time/now'));
 
 // Start server
 app.listen(process.env.PORT || 5000, () => {
