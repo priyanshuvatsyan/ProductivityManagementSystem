@@ -246,12 +246,12 @@ router.put('/:projectId/task/:taskIndex/toggle', auth, async (req, res) => {
   }
 });
 
-// @route GET /time/now
+// @route GET /now
 // @desc fetch the time from server 
 // @access Private
 // Corrected route
-router.get('/time/now', auth, (req, res) => {
-  res.json({ serverTime: new Date().toISOString() });
+router.get('/now', (req, res) => {
+  res.json({ serverTime: new Date() });
 });
 
 module.exports = router;

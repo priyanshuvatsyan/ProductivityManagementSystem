@@ -42,6 +42,7 @@ export default function StartWorking() {
     try {
        const token = localStorage.getItem('token');
     const res = await axios.get('/time/now', {
+
       headers: { Authorization: `Bearer ${token}` }
     });
     const serverTime = new Date(res.data.serverTime);

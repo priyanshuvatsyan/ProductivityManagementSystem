@@ -19,6 +19,8 @@ connectDB();
 app.use('/api/auth', require('./routes/auth'));
 app.use('/api/projects', require('./routes/project')); 
 
+app.use('/api/time', require('./routes/time'));
+
 
 // Start server
 app.listen(process.env.PORT || 5000, () => {
