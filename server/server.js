@@ -3,6 +3,16 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/db');
 const cors = require('cors');
 
+const path = require('path');
+
+// Serve static files from the frontend build folder
+app.use(express.static(path.join(__dirname, 'frontend', 'build')));
+
+// Catch-all route to serve index.html for React routing
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'frontend', 'build', 'index.html'));
+});
+
 // Load environment variables first
 dotenv.config();
 
