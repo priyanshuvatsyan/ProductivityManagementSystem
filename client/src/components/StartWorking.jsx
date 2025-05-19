@@ -18,19 +18,42 @@ export default function StartWorking() {
 
   const [loading, setloading] = useState(false);
 
-  // Timer logic
+  const [serverStartTime, setServerStartTime] = useState(null);
+
+
+   // Timer logic using server time
   useEffect(() => {
     if (isRunning) {
       intervalRef.current = setInterval(() => {
-        setElapsed(prev => prev + 1);
+
+        const now = new Date();
+        const diffInSeconds = Math.floor((now - serverStartTime) / 1000);
+        setElapsed(diffInSeconds);
       }, 1000);
     } else {
       clearInterval(intervalRef.current);
     }
 
     return () => clearInterval(intervalRef.current);
-  }, [isRunning]);
+  }, [isRunning , serverStartTime]);
 
+
+  const handleStart = async () => {
+    try {
+       const token = localStorage.getItem('token');
+    const res = await axios.get('/time/now', {
+      headers: { Authorization: `Bearer ${token}` }
+    });
+    const serverTime = new Date(res.data.serverTime);
+    setServerStartTime(serverTime);
+     setElapsed(0);
+    setIsRunning(true);
+    } catch (err) {
+       console.error('Error fetching server time:', err);
+    }
+  }
+
+ 
   const handlePauseResume = () => {
     setIsRunning(prev => !prev);
   };
@@ -61,6 +84,7 @@ export default function StartWorking() {
       console.error(err);
     }finally{
       setloading(false)}
+setServerStartTime(null); 
 
     setElapsed(0);
   };
@@ -114,7 +138,8 @@ export default function StartWorking() {
         <div className="clock">
           <h1>{formatTime(elapsed)}</h1>
           <div className="buttons-container">
-            <button onClick={() => setIsRunning(true)}>Start</button>
+            <button onClick={handleStart}>Start</button>
+
             <button onClick={handlePauseResume}>
               {isRunning ? 'Pause' : 'Resume'}
             </button>
