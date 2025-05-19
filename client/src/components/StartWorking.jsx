@@ -16,6 +16,8 @@ export default function StartWorking() {
   const [taskList, setTaskList] = useState([]);
   const [projectDetails, setProjectDetails] = useState(null);
 
+  const [loading, setloading] = useState(false);
+
   // Timer logic
   useEffect(() => {
     if (isRunning) {
@@ -37,11 +39,13 @@ export default function StartWorking() {
     clearInterval(intervalRef.current);
     setIsRunning(false);
 
+
     const today = new Date();
     const dateString = today.toISOString().split('T')[0];
     const timeWorkedInMinutes = elapsed / 60;
 
     try {
+      setloading(true)
       const token = localStorage.getItem('token');
       await axios.put(
         `/projects/${projectId}/update-time`,
@@ -55,7 +59,8 @@ export default function StartWorking() {
       );
     } catch (err) {
       console.error(err);
-    }
+    }finally{
+      setloading(false)}
 
     setElapsed(0);
   };
@@ -125,6 +130,15 @@ export default function StartWorking() {
           </div>
         </div>
       </div>
+
+ {loading && (
+  <div className="dialog-backdrop">
+    <div className="dialog authdialog">
+      <p>⏳ Please wait, We are saving your progress...</p>
+    </div>
+  </div>
+)}
+
     </div>
   );
 }
