@@ -5,6 +5,7 @@ const cors = require('cors');
 
 const path = require('path');
 
+const app = express();
 // Serve static files from the frontend build folder
 app.use(express.static(path.join(__dirname, 'frontend', 'build')));
 
@@ -16,7 +17,6 @@ app.get('*', (req, res) => {
 // Load environment variables first
 dotenv.config();
 
-const app = express();
 
 // Middleware
 app.use(express.json()); // This should be after dotenv.config()
