@@ -225,7 +225,7 @@ router.put('/:id/update-time', auth, async (req, res) => {
 // @route PUT /:projectId/task/:taskIndex/toggle
 // @desc to display and update subtasks
 // @access Private
-/* router.put('/:projectId/task/:taskIndex/toggle', auth, async (req, res) => {
+router.put('/:projectId/task/:taskIndex/toggle', auth, async (req, res) => {
   const { projectId, taskIndex } = req.params;
 
   try {
@@ -246,5 +246,5 @@ router.put('/:id/update-time', auth, async (req, res) => {
   }
 });
 
- */
+
 module.exports = router;
